@@ -9,6 +9,10 @@
 			"label": "OpenRouter"
 		},
 		{
+			"value": "zenmux",
+			"label": "ZenMux"
+		},
+		{
 			"value": "gemini",
 			"label": "Google Gemini"
 		},

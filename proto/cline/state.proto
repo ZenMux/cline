@@ -57,6 +57,7 @@ message AutoApprovalSettings {
 message Secrets {
   optional string api_key = 1;
   optional string open_router_api_key = 4;
+  optional string zen_mux_api_key = 41;
   optional string aws_access_key = 5;
   optional string aws_secret_key = 6;
   optional string aws_session_token = 7;
@@ -116,6 +117,7 @@ message Settings {
   optional string gemini_base_url = 18;
   optional string azure_api_version = 19;
   optional string open_router_provider_sorting = 20;
+  optional string zen_mux_provider_sorting = 140;
   optional AutoApprovalSettings auto_approval_settings = 21;
   optional BrowserSettings browser_settings = 24;
   optional string lite_llm_base_url = 25;
@@ -160,6 +162,8 @@ message Settings {
   optional string plan_mode_aws_bedrock_custom_model_base_id = 64;
   optional string plan_mode_open_router_model_id = 65;
   optional OpenRouterModelInfo plan_mode_open_router_model_info = 66;
+  optional string plan_mode_zen_mux_model_id = 136;
+  optional OpenRouterModelInfo plan_mode_zen_mux_model_info = 137;
   optional string plan_mode_open_ai_model_id = 67;
   optional OpenAiCompatibleModelInfo plan_mode_open_ai_model_info = 68;
   optional string plan_mode_ollama_model_id = 69;
@@ -191,6 +195,8 @@ message Settings {
   optional string act_mode_aws_bedrock_custom_model_base_id = 95;
   optional string act_mode_open_router_model_id = 96;
   optional OpenRouterModelInfo act_mode_open_router_model_info = 97;
+  optional string act_mode_zen_mux_model_id = 138;
+  optional OpenRouterModelInfo act_mode_zen_mux_model_info = 139;
   optional string act_mode_open_ai_model_id = 98;
   optional OpenAiCompatibleModelInfo act_mode_open_ai_model_info = 99;
   optional string act_mode_ollama_model_id = 100;

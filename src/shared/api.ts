@@ -5,6 +5,7 @@ export type ApiProvider =
 	| "anthropic"
 	| "claude-code"
 	| "openrouter"
+	| "zenmux"
 	| "bedrock"
 	| "vertex"
 	| "openai"
@@ -49,6 +50,7 @@ export interface ApiHandlerSecrets {
 	awsAccessKey?: string
 	awsSecretKey?: string
 	openRouterApiKey?: string
+	zenMuxApiKey?: string
 	aihubmixApiKey?: string
 	aihubmixBaseUrl?: string
 	aihubmixAppCode?: string
@@ -96,6 +98,7 @@ export interface ApiHandlerOptions {
 	openAiHeaders?: Record<string, string> // Custom headers for OpenAI requests
 	anthropicBaseUrl?: string
 	openRouterProviderSorting?: string
+	zenMuxProviderSorting?: string
 	awsRegion?: string
 	awsUseCrossRegionInference?: boolean
 	awsUseGlobalInference?: boolean
@@ -149,6 +152,8 @@ export interface ApiHandlerOptions {
 	planModeAwsBedrockCustomModelBaseId?: string
 	planModeOpenRouterModelId?: string
 	planModeOpenRouterModelInfo?: ModelInfo
+	planModeZenMuxModelId?: string
+	planModeZenMuxModelInfo?: ModelInfo
 	planModeOpenAiModelId?: string
 	planModeOpenAiModelInfo?: OpenAiCompatibleModelInfo
 	planModeOllamaModelId?: string
@@ -189,6 +194,8 @@ export interface ApiHandlerOptions {
 	actModeAwsBedrockCustomModelBaseId?: string
 	actModeOpenRouterModelId?: string
 	actModeOpenRouterModelInfo?: ModelInfo
+	actModeZenMuxModelId?: string
+	actModeZenMuxModelInfo?: ModelInfo
 	actModeOpenAiModelId?: string
 	actModeOpenAiModelInfo?: OpenAiCompatibleModelInfo
 	actModeOllamaModelId?: string
@@ -803,6 +810,20 @@ export const openRouterDefaultModelInfo: ModelInfo = {
 	cacheReadsPrice: 0.3,
 	description:
 		"Claude Sonnet 4.5 delivers superior intelligence across coding, agentic search, and AI agent capabilities. It's a powerful choice for agentic coding, and can complete tasks across the entire software development lifecycle—from initial planning to bug fixes, maintenance to large refactors. It offers strong performance in both planning and solving for complex coding tasks, making it an ideal choice to power end-to-end software development processes.\n\nRead more in the [blog post here](https://www.anthropic.com/claude/sonnet)",
+}
+
+// ZenMux default model
+export const zenMuxDefaultModelId = "anthropic/claude-opus-4"
+export const zenMuxDefaultModelInfo: ModelInfo = {
+	maxTokens: 8192,
+	contextWindow: 200_000,
+	supportsImages: true,
+	supportsPromptCache: true,
+	inputPrice: 15.0,
+	outputPrice: 75.0,
+	cacheWritesPrice: 18.75,
+	cacheReadsPrice: 1.5,
+	description: "Claude Opus 4 via ZenMux",
 }
 
 // Cline custom model - Devstral

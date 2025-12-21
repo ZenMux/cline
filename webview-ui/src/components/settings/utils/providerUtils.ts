@@ -133,6 +133,7 @@ export function getModelsForProvider(
 			return nousResearchModels
 		// Providers with dynamic models - return undefined
 		case "openrouter":
+		case "zenmux":
 		case "cline":
 		case "openai":
 		case "ollama":
@@ -246,6 +247,16 @@ export function normalizeApiConfiguration(
 				selectedProvider: provider,
 				selectedModelId: openRouterModelId || openRouterDefaultModelId,
 				selectedModelInfo: openRouterModelInfo || openRouterDefaultModelInfo,
+			}
+		case "zenmux":
+			const zenMuxModelId =
+				currentMode === "plan" ? apiConfiguration?.planModeZenMuxModelId : apiConfiguration?.actModeZenMuxModelId
+			const zenMuxModelInfo =
+				currentMode === "plan" ? apiConfiguration?.planModeZenMuxModelInfo : apiConfiguration?.actModeZenMuxModelInfo
+			return {
+				selectedProvider: provider,
+				selectedModelId: zenMuxModelId || "",
+				selectedModelInfo: zenMuxModelInfo || openAiModelInfoSaneDefaults,
 			}
 		case "requesty":
 			const requestyModelId =
@@ -505,6 +516,7 @@ export function getModeSpecificFields(apiConfiguration: ApiConfiguration | undef
 			requestyModelId: undefined,
 			openAiModelId: undefined,
 			openRouterModelId: undefined,
+			zenMuxModelId: undefined,
 			groqModelId: undefined,
 			basetenModelId: undefined,
 			huggingFaceModelId: undefined,
@@ -517,6 +529,7 @@ export function getModeSpecificFields(apiConfiguration: ApiConfiguration | undef
 			openAiModelInfo: undefined,
 			liteLlmModelInfo: undefined,
 			openRouterModelInfo: undefined,
+			zenMuxModelInfo: undefined,
 			requestyModelInfo: undefined,
 			groqModelInfo: undefined,
 			basetenModelInfo: undefined,
@@ -552,6 +565,7 @@ export function getModeSpecificFields(apiConfiguration: ApiConfiguration | undef
 		openAiModelId: mode === "plan" ? apiConfiguration.planModeOpenAiModelId : apiConfiguration.actModeOpenAiModelId,
 		openRouterModelId:
 			mode === "plan" ? apiConfiguration.planModeOpenRouterModelId : apiConfiguration.actModeOpenRouterModelId,
+		zenMuxModelId: mode === "plan" ? apiConfiguration.planModeZenMuxModelId : apiConfiguration.actModeZenMuxModelId,
 		groqModelId: mode === "plan" ? apiConfiguration.planModeGroqModelId : apiConfiguration.actModeGroqModelId,
 		basetenModelId: mode === "plan" ? apiConfiguration.planModeBasetenModelId : apiConfiguration.actModeBasetenModelId,
 		huggingFaceModelId:
@@ -569,6 +583,7 @@ export function getModeSpecificFields(apiConfiguration: ApiConfiguration | undef
 		liteLlmModelInfo: mode === "plan" ? apiConfiguration.planModeLiteLlmModelInfo : apiConfiguration.actModeLiteLlmModelInfo,
 		openRouterModelInfo:
 			mode === "plan" ? apiConfiguration.planModeOpenRouterModelInfo : apiConfiguration.actModeOpenRouterModelInfo,
+		zenMuxModelInfo: mode === "plan" ? apiConfiguration.planModeZenMuxModelInfo : apiConfiguration.actModeZenMuxModelInfo,
 		requestyModelInfo:
 			mode === "plan" ? apiConfiguration.planModeRequestyModelInfo : apiConfiguration.actModeRequestyModelInfo,
 		groqModelInfo: mode === "plan" ? apiConfiguration.planModeGroqModelInfo : apiConfiguration.actModeGroqModelInfo,
@@ -645,6 +660,13 @@ export async function syncModeConfigurations(
 			updates.actModeOpenRouterModelId = sourceFields.openRouterModelId
 			updates.planModeOpenRouterModelInfo = sourceFields.openRouterModelInfo
 			updates.actModeOpenRouterModelInfo = sourceFields.openRouterModelInfo
+			break
+
+		case "zenmux":
+			updates.planModeZenMuxModelId = sourceFields.zenMuxModelId
+			updates.actModeZenMuxModelId = sourceFields.zenMuxModelId
+			updates.planModeZenMuxModelInfo = sourceFields.zenMuxModelInfo
+			updates.actModeZenMuxModelInfo = sourceFields.zenMuxModelInfo
 			break
 
 		case "requesty":

@@ -19,6 +19,8 @@ service ModelsService {
   rpc getVsCodeLmModels(EmptyRequest) returns (VsCodeLmModelsArray);
   // Refreshes and returns OpenRouter models
   rpc refreshOpenRouterModelsRpc(EmptyRequest) returns (OpenRouterCompatibleModelInfo);
+  // Refreshes and returns ZenMux models
+  rpc refreshZenMuxModelsRpc(EmptyRequest) returns (OpenRouterCompatibleModelInfo);
   // Refreshes and returns Hugging Face models
   rpc refreshHuggingFaceModels(EmptyRequest) returns (OpenRouterCompatibleModelInfo);
   // Refreshes and returns OpenAI models
@@ -31,6 +33,8 @@ service ModelsService {
   rpc refreshLiteLlmModelsRpc(EmptyRequest) returns (OpenRouterCompatibleModelInfo);
   // Subscribe to OpenRouter models updates
   rpc subscribeToOpenRouterModels(EmptyRequest) returns (stream OpenRouterCompatibleModelInfo);
+  // Subscribe to ZenMux models updates
+  rpc subscribeToZenMuxModels(EmptyRequest) returns (stream OpenRouterCompatibleModelInfo);
   // Subscribe to LiteLLM models updates
   rpc subscribeToLiteLlmModels(EmptyRequest) returns (stream OpenRouterCompatibleModelInfo);
   // Updates API configuration (legacy - uses combined configuration)
@@ -181,6 +185,7 @@ message ModelsApiSecrets {
   optional string oca_refresh_token = 37;
   optional string minimax_api_key = 38;
   optional string aihubmix_api_key = 39;
+  optional string zen_mux_api_key = 40;
 }
 
 // API configuration options (non-secret settings)
@@ -229,6 +234,7 @@ message ModelsApiOptions {
   optional string minimax_api_line = 41;
   optional string aihubmix_base_url = 42;
   optional string aihubmix_app_code = 43;
+  optional string zen_mux_provider_sorting = 44;
 
   // Plan mode configurations
   optional ApiProvider plan_mode_api_provider = 100;
@@ -240,6 +246,8 @@ message ModelsApiOptions {
   optional string plan_mode_aws_bedrock_custom_model_base_id = 106;
   optional string plan_mode_open_router_model_id = 107;
   optional OpenRouterModelInfo plan_mode_open_router_model_info = 108;
+  optional string plan_mode_zen_mux_model_id = 139;
+  optional OpenRouterModelInfo plan_mode_zen_mux_model_info = 140;
   optional string plan_mode_open_ai_model_id = 109;
   optional OpenAiCompatibleModelInfo plan_mode_open_ai_model_info = 110;
   optional string plan_mode_ollama_model_id = 111;
@@ -277,6 +285,8 @@ message ModelsApiOptions {
   optional string act_mode_aws_bedrock_custom_model_base_id = 206;
   optional string act_mode_open_router_model_id = 207;
   optional OpenRouterModelInfo act_mode_open_router_model_info = 208;
+  optional string act_mode_zen_mux_model_id = 239;
+  optional OpenRouterModelInfo act_mode_zen_mux_model_info = 240;
   optional string act_mode_open_ai_model_id = 209;
   optional OpenAiCompatibleModelInfo act_mode_open_ai_model_info = 210;
   optional string act_mode_ollama_model_id = 211;
@@ -432,6 +442,7 @@ enum ApiProvider {
   HICAP = 37;
   AIHUBMIX = 38;
   NOUSRESEARCH = 39;
+  ZENMUX = 40;
 }
 
 enum ApiFormat {
@@ -567,6 +578,8 @@ message ModelsApiConfiguration {
   optional string aihubmix_base_url = 83;
   optional string aihubmix_app_code = 84;
   optional string nous_research_api_key = 85;
+  optional string zen_mux_api_key = 86;
+  optional string zen_mux_provider_sorting = 87;
 
   // Plan mode configurations
   optional ApiProvider plan_mode_api_provider = 100;
@@ -578,6 +591,8 @@ message ModelsApiConfiguration {
   optional string plan_mode_aws_bedrock_custom_model_base_id = 106;
   optional string plan_mode_open_router_model_id = 107;
   optional OpenRouterModelInfo plan_mode_open_router_model_info = 108;
+  optional string plan_mode_zen_mux_model_id = 139;
+  optional OpenRouterModelInfo plan_mode_zen_mux_model_info = 140;
   optional string plan_mode_open_ai_model_id = 109;
   optional OpenAiCompatibleModelInfo plan_mode_open_ai_model_info = 110;
   optional string plan_mode_ollama_model_id = 111;
@@ -619,6 +634,8 @@ message ModelsApiConfiguration {
   optional string act_mode_aws_bedrock_custom_model_base_id = 206;
   optional string act_mode_open_router_model_id = 207;
   optional OpenRouterModelInfo act_mode_open_router_model_info = 208;
+  optional string act_mode_zen_mux_model_id = 239;
+  optional OpenRouterModelInfo act_mode_zen_mux_model_info = 240;
   optional string act_mode_open_ai_model_id = 209;
   optional OpenAiCompatibleModelInfo act_mode_open_ai_model_info = 210;
   optional string act_mode_ollama_model_id = 211;

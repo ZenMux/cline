@@ -15,6 +15,7 @@ export async function readSecretsFromDisk(context: ExtensionContext): Promise<Se
 	const [
 		apiKey,
 		openRouterApiKey,
+		zenMuxApiKey,
 		firebaseClineAccountId,
 		clineAccountId,
 		awsAccessKey,
@@ -60,6 +61,7 @@ export async function readSecretsFromDisk(context: ExtensionContext): Promise<Se
 	] = await Promise.all([
 		context.secrets.get("apiKey") as Promise<Secrets["apiKey"]>,
 		context.secrets.get("openRouterApiKey") as Promise<Secrets["openRouterApiKey"]>,
+		context.secrets.get("zenMuxApiKey") as Promise<Secrets["zenMuxApiKey"]>,
 		context.secrets.get("clineAccountId") as Promise<Secrets["clineAccountId"]>,
 		context.secrets.get("cline:clineAccountId") as Promise<Secrets["cline:clineAccountId"]>,
 		context.secrets.get("awsAccessKey") as Promise<Secrets["awsAccessKey"]>,
@@ -108,6 +110,7 @@ export async function readSecretsFromDisk(context: ExtensionContext): Promise<Se
 		authNonce,
 		apiKey,
 		openRouterApiKey,
+		zenMuxApiKey,
 		clineAccountId: firebaseClineAccountId,
 		"cline:clineAccountId": clineAccountId,
 		huggingFaceApiKey,
@@ -206,6 +209,8 @@ export async function readGlobalStateFromDisk(context: ExtensionContext): Promis
 		const azureApiVersion = context.globalState.get<GlobalStateAndSettings["azureApiVersion"]>("azureApiVersion")
 		const openRouterProviderSorting =
 			context.globalState.get<GlobalStateAndSettings["openRouterProviderSorting"]>("openRouterProviderSorting")
+		const zenMuxProviderSorting =
+			context.globalState.get<GlobalStateAndSettings["zenMuxProviderSorting"]>("zenMuxProviderSorting")
 		const lastShownAnnouncementId =
 			context.globalState.get<GlobalStateAndSettings["lastShownAnnouncementId"]>("lastShownAnnouncementId")
 		const autoApprovalSettings =
@@ -349,6 +354,10 @@ export async function readGlobalStateFromDisk(context: ExtensionContext): Promis
 			context.globalState.get<GlobalStateAndSettings["planModeOpenRouterModelId"]>("planModeOpenRouterModelId")
 		const planModeOpenRouterModelInfo =
 			context.globalState.get<GlobalStateAndSettings["planModeOpenRouterModelInfo"]>("planModeOpenRouterModelInfo")
+		const planModeZenMuxModelId =
+			context.globalState.get<GlobalStateAndSettings["planModeZenMuxModelId"]>("planModeZenMuxModelId")
+		const planModeZenMuxModelInfo =
+			context.globalState.get<GlobalStateAndSettings["planModeZenMuxModelInfo"]>("planModeZenMuxModelInfo")
 		const planModeOpenAiModelId =
 			context.globalState.get<GlobalStateAndSettings["planModeOpenAiModelId"]>("planModeOpenAiModelId")
 		const planModeOpenAiModelInfo =
@@ -422,6 +431,10 @@ export async function readGlobalStateFromDisk(context: ExtensionContext): Promis
 			context.globalState.get<GlobalStateAndSettings["actModeOpenRouterModelId"]>("actModeOpenRouterModelId")
 		const actModeOpenRouterModelInfo =
 			context.globalState.get<GlobalStateAndSettings["actModeOpenRouterModelInfo"]>("actModeOpenRouterModelInfo")
+		const actModeZenMuxModelId =
+			context.globalState.get<GlobalStateAndSettings["actModeZenMuxModelId"]>("actModeZenMuxModelId")
+		const actModeZenMuxModelInfo =
+			context.globalState.get<GlobalStateAndSettings["actModeZenMuxModelInfo"]>("actModeZenMuxModelInfo")
 		const actModeOpenAiModelId =
 			context.globalState.get<GlobalStateAndSettings["actModeOpenAiModelId"]>("actModeOpenAiModelId")
 		const actModeOpenAiModelInfo =
@@ -552,6 +565,7 @@ export async function readGlobalStateFromDisk(context: ExtensionContext): Promis
 			zaiApiLine,
 			azureApiVersion,
 			openRouterProviderSorting,
+			zenMuxProviderSorting,
 			liteLlmBaseUrl,
 			liteLlmUsePromptCache,
 			fireworksModelMaxCompletionTokens,
@@ -582,6 +596,8 @@ export async function readGlobalStateFromDisk(context: ExtensionContext): Promis
 			planModeAwsBedrockCustomModelBaseId,
 			planModeOpenRouterModelId,
 			planModeOpenRouterModelInfo,
+			planModeZenMuxModelId,
+			planModeZenMuxModelInfo,
 			planModeOpenAiModelId,
 			planModeOpenAiModelInfo,
 			planModeOllamaModelId,
@@ -620,6 +636,8 @@ export async function readGlobalStateFromDisk(context: ExtensionContext): Promis
 			actModeAwsBedrockCustomModelBaseId,
 			actModeOpenRouterModelId,
 			actModeOpenRouterModelInfo,
+			actModeZenMuxModelId,
+			actModeZenMuxModelInfo,
 			actModeOpenAiModelId,
 			actModeOpenAiModelInfo,
 			actModeOllamaModelId,

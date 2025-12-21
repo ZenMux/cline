@@ -34,6 +34,7 @@ export interface ExtensionStateContextType extends ExtensionState {
 	showWelcome: boolean
 	onboardingModels: OnboardingModelGroup | undefined
 	openRouterModels: Record<string, ModelInfo>
+	zenMuxModels: Record<string, ModelInfo>
 	hicapModels: Record<string, ModelInfo>
 	liteLlmModels: Record<string, ModelInfo>
 	openAiModels: string[]
@@ -86,6 +87,7 @@ export interface ExtensionStateContextType extends ExtensionState {
 
 	// Refresh functions
 	refreshOpenRouterModels: () => void
+	refreshZenMuxModels: () => void
 	refreshHicapModels: () => void
 	refreshLiteLlmModels: () => void
 	setUserInfo: (userInfo?: UserInfo) => void
@@ -261,6 +263,7 @@ export const ExtensionStateContextProvider: React.FC<{
 	const [openRouterModels, setOpenRouterModels] = useState<Record<string, ModelInfo>>({
 		[openRouterDefaultModelId]: openRouterDefaultModelInfo,
 	})
+	const [zenMuxModels, setZenMuxModels] = useState<Record<string, ModelInfo>>({})
 	const [hicapModels, setHicapModels] = useState<Record<string, ModelInfo>>({})
 	const [liteLlmModels, setLiteLlmModels] = useState<Record<string, ModelInfo>>({})
 	const [totalTasksSize, setTotalTasksSize] = useState<number | null>(null)
@@ -294,6 +297,7 @@ export const ExtensionStateContextProvider: React.FC<{
 	const partialMessageUnsubscribeRef = useRef<(() => void) | null>(null)
 	const mcpMarketplaceUnsubscribeRef = useRef<(() => void) | null>(null)
 	const openRouterModelsUnsubscribeRef = useRef<(() => void) | null>(null)
+	const zenMuxModelsUnsubscribeRef = useRef<(() => void) | null>(null)
 	const liteLlmModelsUnsubscribeRef = useRef<(() => void) | null>(null)
 	const workspaceUpdatesUnsubscribeRef = useRef<(() => void) | null>(null)
 	const relinquishControlUnsubscribeRef = useRef<(() => void) | null>(null)
@@ -523,6 +527,20 @@ export const ExtensionStateContextProvider: React.FC<{
 			},
 		})
 
+		// Subscribe to ZenMux models updates
+		zenMuxModelsUnsubscribeRef.current = ModelsServiceClient.subscribeToZenMuxModels(EmptyRequest.create({}), {
+			onResponse: (response: OpenRouterCompatibleModelInfo) => {
+				const models = fromProtobufModels(response.models)
+				setZenMuxModels(models)
+			},
+			onError: (error) => {
+				console.error("Error in ZenMux models subscription:", error)
+			},
+			onComplete: () => {
+				console.log("ZenMux models subscription completed")
+			},
+		})
+
 		// Subscribe to LiteLLM models updates
 		liteLlmModelsUnsubscribeRef.current = ModelsServiceClient.subscribeToLiteLlmModels(EmptyRequest.create({}), {
 			onResponse: (response: OpenRouterCompatibleModelInfo) => {
@@ -637,6 +655,10 @@ export const ExtensionStateContextProvider: React.FC<{
 				openRouterModelsUnsubscribeRef.current()
 				openRouterModelsUnsubscribeRef.current = null
 			}
+			if (zenMuxModelsUnsubscribeRef.current) {
+				zenMuxModelsUnsubscribeRef.current()
+				zenMuxModelsUnsubscribeRef.current = null
+			}
 			if (liteLlmModelsUnsubscribeRef.current) {
 				liteLlmModelsUnsubscribeRef.current()
 				liteLlmModelsUnsubscribeRef.current = null
@@ -674,6 +696,15 @@ export const ExtensionStateContextProvider: React.FC<{
 				})
 			})
 			.catch((error: Error) => console.error("Failed to refresh OpenRouter models:", error))
+	}, [])
+
+	const refreshZenMuxModels = useCallback(() => {
+		ModelsServiceClient.refreshZenMuxModelsRpc(EmptyRequest.create({}))
+			.then((response: OpenRouterCompatibleModelInfo) => {
+				const models = fromProtobufModels(response.models)
+				setZenMuxModels(models)
+			})
+			.catch((error: Error) => console.error("Failed to refresh ZenMux models:", error))
 	}, [])
 
 	const refreshHicapModels = useCallback(() => {
@@ -723,6 +754,7 @@ export const ExtensionStateContextProvider: React.FC<{
 		showWelcome,
 		onboardingModels,
 		openRouterModels,
+		zenMuxModels,
 		hicapModels,
 		liteLlmModels,
 		openAiModels,
@@ -832,6 +864,7 @@ export const ExtensionStateContextProvider: React.FC<{
 		setMcpTab,
 		setTotalTasksSize,
 		refreshOpenRouterModels,
+		refreshZenMuxModels,
 		refreshHicapModels,
 		refreshLiteLlmModels,
 		onRelinquishControl,

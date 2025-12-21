@@ -83,6 +83,7 @@ export interface Settings {
 	geminiBaseUrl: string | undefined
 	azureApiVersion: string | undefined
 	openRouterProviderSorting: string | undefined
+	zenMuxProviderSorting: string | undefined
 	autoApprovalSettings: AutoApprovalSettings
 	globalClineRulesToggles: ClineRulesToggles
 	globalWorkflowToggles: ClineRulesToggles
@@ -145,6 +146,8 @@ export interface Settings {
 	planModeAwsBedrockCustomModelBaseId: string | undefined
 	planModeOpenRouterModelId: string | undefined
 	planModeOpenRouterModelInfo: ModelInfo | undefined
+	planModeZenMuxModelId: string | undefined
+	planModeZenMuxModelInfo: ModelInfo | undefined
 	planModeOpenAiModelId: string | undefined
 	planModeOpenAiModelInfo: ModelInfo | undefined
 	planModeOllamaModelId: string | undefined
@@ -183,6 +186,8 @@ export interface Settings {
 	actModeAwsBedrockCustomModelBaseId: string | undefined
 	actModeOpenRouterModelId: string | undefined
 	actModeOpenRouterModelInfo: ModelInfo | undefined
+	actModeZenMuxModelId: string | undefined
+	actModeZenMuxModelInfo: ModelInfo | undefined
 	actModeOpenAiModelId: string | undefined
 	actModeOpenAiModelInfo: ModelInfo | undefined
 	actModeOllamaModelId: string | undefined
@@ -233,6 +238,7 @@ export interface Secrets {
 	clineAccountId: string | undefined
 	"cline:clineAccountId": string | undefined // Auth_Provider:AccountId
 	openRouterApiKey: string | undefined
+	zenMuxApiKey: string | undefined
 	awsAccessKey: string | undefined
 	awsSecretKey: string | undefined
 	awsSessionToken: string | undefined

@@ -745,6 +745,21 @@ export class Controller {
 		return undefined
 	}
 
+	// Read ZenMux models from disk cache
+	async readZenMuxModels(): Promise<Record<string, ModelInfo> | undefined> {
+		const zenMuxModelsFilePath = path.join(await ensureCacheDirectoryExists(), GlobalFileNames.zenMuxModels)
+		try {
+			if (await fileExistsAtPath(zenMuxModelsFilePath)) {
+				const fileContents = await fs.readFile(zenMuxModelsFilePath, "utf8")
+				const models = JSON.parse(fileContents)
+				return models
+			}
+		} catch (error) {
+			console.error("Error reading cached ZenMux models:", error)
+		}
+		return undefined
+	}
+
 	// Task history
 
 	async getTaskWithId(id: string): Promise<{

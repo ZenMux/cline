@@ -42,6 +42,7 @@ import { VertexHandler } from "./providers/vertex"
 import { VsCodeLmHandler } from "./providers/vscode-lm"
 import { XAIHandler } from "./providers/xai"
 import { ZAiHandler } from "./providers/zai"
+import { ZenMuxHandler } from "./providers/zenmux"
 import { ApiStream, ApiStreamUsageChunk } from "./transform/stream"
 
 export type CommonApiHandlerOptions = {
@@ -93,6 +94,18 @@ function createHandlerForProvider(
 				openRouterModelId: mode === "plan" ? options.planModeOpenRouterModelId : options.actModeOpenRouterModelId,
 				openRouterModelInfo: mode === "plan" ? options.planModeOpenRouterModelInfo : options.actModeOpenRouterModelInfo,
 				openRouterProviderSorting: options.openRouterProviderSorting,
+				reasoningEffort: mode === "plan" ? options.planModeReasoningEffort : options.actModeReasoningEffort,
+				thinkingBudgetTokens:
+					mode === "plan" ? options.planModeThinkingBudgetTokens : options.actModeThinkingBudgetTokens,
+				geminiThinkingLevel: mode === "plan" ? options.geminiPlanModeThinkingLevel : options.geminiActModeThinkingLevel,
+			})
+		case "zenmux":
+			return new ZenMuxHandler({
+				onRetryAttempt: options.onRetryAttempt,
+				zenMuxApiKey: options.zenMuxApiKey,
+				zenMuxModelId: mode === "plan" ? options.planModeZenMuxModelId : options.actModeZenMuxModelId,
+				zenMuxModelInfo: mode === "plan" ? options.planModeZenMuxModelInfo : options.actModeZenMuxModelInfo,
+				zenMuxProviderSorting: options.zenMuxProviderSorting,
 				reasoningEffort: mode === "plan" ? options.planModeReasoningEffort : options.actModeReasoningEffort,
 				thinkingBudgetTokens:
 					mode === "plan" ? options.planModeThinkingBudgetTokens : options.actModeThinkingBudgetTokens,
